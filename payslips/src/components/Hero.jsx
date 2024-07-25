@@ -3,7 +3,7 @@ import { Worker, Viewer } from '@react-pdf-viewer/core';
 import '@react-pdf-viewer/core/lib/styles/index.css';
 
 const pdfs = [
-    { id: 1, title: 'Sample PDF 1', url: '' },
+    { id: 1, title: 'Sample PDF 1', url: 'https://res.cloudinary.com/dalzs7bc2/image/upload/v1721889524/Ravi_Kiran_Varma_VTS_Assessment_Report_blan0f.pdf' },
     { id: 2, title: 'Sample PDF 2', url: '' },
 ];
 
@@ -16,18 +16,22 @@ const Hero = () => {
 
     const handleDownload = (pdfUrl) => {
         
-        fetch(pdfUrl).then((response) => {
-            response.blob().then((blob) => {
-            
-                const fileURL = window.URL.createObjectURL(blob);
-                    
-                let alink = document.createElement("a");
-                alink.href = fileURL;
-                const filename = pdfUrl.split('/').pop() || 'document.pdf';
-                alink.download = filename.endsWith('.pdf') ? filename : `${filename}.pdf`;
-                alink.click();
+        if (pdfUrl == '') {
+            alert('No Data..!');
+        } else {
+            fetch(pdfUrl).then((response) => {
+                response.blob().then((blob) => {
+                
+                    const fileURL = window.URL.createObjectURL(blob);
+                        
+                    let alink = document.createElement("a");
+                    alink.href = fileURL;
+                    const filename = pdfUrl.split('/').pop() || 'document.pdf';
+                    alink.download = filename.endsWith('.pdf') ? filename : `${filename}.pdf`;
+                    alink.click();
+                });
             });
-        });
+        }
     };
 
     useEffect(() => {
@@ -86,11 +90,16 @@ const Hero = () => {
             ))}
         </div>
         <div className="payRollPreview">
-            {selectedPdf && (
+            {selectedPdf ? (
                 <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js"> {/* Make sure this path is correct */}
                     <Viewer fileUrl={selectedPdf} />
                 </Worker>
-            )}
+            ) : 
+                <div className="noData">
+                    <img src={process.env.PUBLIC_URL + '/images/box.png'} alt="" />
+                    <p>No Data</p>
+                </div>
+            }
         </div>
     </div>
   )
