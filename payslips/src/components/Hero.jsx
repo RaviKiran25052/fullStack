@@ -3,20 +3,18 @@ import { Worker, Viewer } from '@react-pdf-viewer/core';
 import '@react-pdf-viewer/core/lib/styles/index.css';
 
 const pdfs = [
-    { id: 1, title: 'Sample PDF 1', url: 'https://res.cloudinary.com/dalzs7bc2/image/upload/v1721889524/Ravi_Kiran_Varma_VTS_Assessment_Report_blan0f.pdf' },
-    { id: 2, title: 'Sample PDF 2', url: '' },
+    { id: 1, title: 'Sample PDF 1', url: 'https://res.cloudinary.com/dalzs7bc2/image/upload/v1721889524/Ravi_Kiran_Varma_VTS_Assessment_Report_blan0f.pdf', date: '2024-02-15' },
+    { id: 2, title: 'Sample PDF 2', url: 'https://example.com/sample2.pdf', date: '2024-08-05' }
 ];
 
 const Hero = () => {
     const [selectedPdf, setSelectedPdf] = useState(null);
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');
 
-    const handleView = (pdfUrl) => {
-        setSelectedPdf(pdfUrl);
-    };
 
-    const handleDownload = (pdfUrl) => {
-        
-        if (pdfUrl == '') {
+    const handleDownload = (pdfUrl) => {   
+        if (pdfUrl === "") {
             alert('No Data..!');
         } else {
             fetch(pdfUrl).then((response) => {
@@ -33,6 +31,24 @@ const Hero = () => {
             });
         }
     };
+    const handleStartDateChange = (event) => {
+        setStartDate(event.target.value);
+      };
+    
+      const handleEndDateChange = (event) => {
+        setEndDate(event.target.value);
+      };
+      const filterPdfs = () => {
+        if (!startDate || !endDate) return pdfs;
+    
+        const inputStartDate = new Date(startDate);
+        const inputEndDate = new Date(endDate);
+    
+        return pdfs.filter((pdf) => {
+          const pdfDate = new Date(pdf.date);
+          return pdfDate >= inputStartDate && pdfDate <= inputEndDate;
+        });
+      };
 
     useEffect(() => {
         return () => {
@@ -78,17 +94,38 @@ const Hero = () => {
                 <div className="dashLink"><p>History</p></div>
             </div>
         </div>
-        <div className="payRollCards">
-            {pdfs.map((pdf) => (
-                <div key={pdf.id} className="payRollCard">
-                    <p className="payRollDesp">{pdf.title}</p>
-                    <div className="payRollBtnCont">
-                        <button className="payRollBtn" onClick={() => handleView(pdf.url)}>View</button>
-                        <button className="payRollBtn" onClick={() => handleDownload(pdf.url)}>Download</button>
-                    </div>
+            <div className="payRollCards">
+                <div className='dateFilter'>
+                    <label style={{marginRight: "30px"}}>
+                    Start Date:
+                    <input
+                        type="date"
+                        value={startDate}
+                        onChange={handleStartDateChange}
+                    />
+                    </label>
+                    <label>
+                    End Date:
+                    <input
+                        type="date"
+                        value={endDate}
+                        onChange={handleEndDateChange}
+                    />
+                    </label>
                 </div>
-            ))}
-        </div>
+                <div>
+                    {filterPdfs().map((pdf) => (
+                    <div key={pdf.id} className="payRollCard">
+                        <p className="payRollDesp">{pdf.date}</p>
+                        <p className="payRollDesp">{pdf.title}</p>
+                        <div className="payRollBtnCont">
+                        <button className="payRollBtn" onClick={() => setSelectedPdf(pdf.url)}>View</button>
+                        <button className="payRollBtn" onClick={() => handleDownload(pdf.url)}>Download</button>
+                        </div>
+                    </div>
+                    ))}
+                </div>
+            </div>
         <div className="payRollPreview">
             {selectedPdf ? (
                 <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js"> {/* Make sure this path is correct */}
