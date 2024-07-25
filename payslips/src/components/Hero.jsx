@@ -1,6 +1,43 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { Worker, Viewer } from '@react-pdf-viewer/core';
+import '@react-pdf-viewer/core/lib/styles/index.css';
+
+const pdfs = [
+    { id: 1, title: 'Sample PDF 1', url: '' },
+    { id: 2, title: 'Sample PDF 2', url: '' },
+];
 
 const Hero = () => {
+    const [selectedPdf, setSelectedPdf] = useState(null);
+
+    const handleView = (pdfUrl) => {
+        setSelectedPdf(pdfUrl);
+    };
+
+    const handleDownload = (pdfUrl) => {
+        
+        fetch(pdfUrl).then((response) => {
+            response.blob().then((blob) => {
+            
+                const fileURL = window.URL.createObjectURL(blob);
+                    
+                let alink = document.createElement("a");
+                alink.href = fileURL;
+                const filename = pdfUrl.split('/').pop() || 'document.pdf';
+                alink.download = filename.endsWith('.pdf') ? filename : `${filename}.pdf`;
+                alink.click();
+            });
+        });
+    };
+
+    useEffect(() => {
+        return () => {
+        if (selectedPdf) {
+            URL.revokeObjectURL(selectedPdf);
+        }
+        };
+    }, [selectedPdf]);
+
   return (
     <div className='heroSection'>
         <div className="dashboard">
@@ -24,8 +61,7 @@ const Hero = () => {
                 </div>
             </div>
             <div className="dashLinks">
-                {/* <div className="dashLink">Amount Details</div>
-                <div className="dashLink">Balance</div> */}
+                <div className="dashLink"><p>Amount Details</p></div>
                 <div className="dashLink">
                     <p>Pay Rolls</p>
                     <ul className="dashDropDownList">
@@ -33,34 +69,28 @@ const Hero = () => {
                         <li>Details</li>
                     </ul>
                 </div>
-                {/* <div className="dashLink">Bills</div>
-                <div className="dashLink">History</div> */}
+                <div className="dashLink"><p>Balance</p></div>
+                <div className="dashLink"><p>Bills</p></div>
+                <div className="dashLink"><p>History</p></div>
             </div>
         </div>
         <div className="payRollCards">
-            <div className="payRollCard">
-                <p className="payRollDesp">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore, eaque placeat? Ut numquam eos amet quis? Non nobis dicta ab, quod architecto asperiores eos praesentium iste voluptas, quia animi eligendi?</p>
-                <div className="payRollBtnCont">
-                    <button className="payRollBtn">View</button>
-                    <button className="payRollBtn">Download</button>
+            {pdfs.map((pdf) => (
+                <div key={pdf.id} className="payRollCard">
+                    <p className="payRollDesp">{pdf.title}</p>
+                    <div className="payRollBtnCont">
+                        <button className="payRollBtn" onClick={() => handleView(pdf.url)}>View</button>
+                        <button className="payRollBtn" onClick={() => handleDownload(pdf.url)}>Download</button>
+                    </div>
                 </div>
-            </div>
-            <div className="payRollCard">
-                <p className="payRollDesp">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore, eaque placeat? Ut numquam eos amet quis? Non nobis dicta ab, quod architecto asperiores eos praesentium iste voluptas, quia animi eligendi?</p>
-                <div className="payRollBtnCont">
-                    <button className="payRollBtn">View</button>
-                    <button className="payRollBtn">Download</button>
-                </div>
-            </div>
-            <div className="payRollCard">
-                <p className="payRollDesp">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore, eaque placeat? Ut numquam eos amet quis? Non nobis dicta ab, quod architecto asperiores eos praesentium iste voluptas, quia animi eligendi?</p>
-                <div className="payRollBtnCont">
-                    <button className="payRollBtn">View</button>
-                    <button className="payRollBtn">Download</button>
-                </div>
-            </div>
+            ))}
         </div>
         <div className="payRollPreview">
+            {selectedPdf && (
+                <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js"> {/* Make sure this path is correct */}
+                    <Viewer fileUrl={selectedPdf} />
+                </Worker>
+            )}
         </div>
     </div>
   )
