@@ -107,11 +107,16 @@ body {
 .payRollCards {
   height: calc(100vh - 60px);
   width: fit-content;
+  overflow-x: hidden;
+  overflow-y: scroll;
   border-right: solid 2px #ddd;
-  padding: 0 20px;
+  padding: 0 40px;
+}
+.payRollCards::-webkit-scrollbar {
+  display: none;
 }
 .payRollCard {
-  width: 400px;
+  width: 350px;
   border-radius: 20px;
   box-shadow: 0 0 10px #ddd;
   padding: 20px;
@@ -123,9 +128,21 @@ body {
 }
 .payRollBtn {
   margin: 0 10px;
+  padding: 8px 20px;
+  border-radius: 20px;
+  border: solid 2px;
+  background-color: #4870f4;
+  color: #fff;
+  transition: background-color 0.3s;
+}
+.payRollBtn:hover {
+  border: solid 2px #4870f4;
+  background-color: #fff;
+  color: #4870f4;
+  cursor: pointer;
 }
 .payRollPreview {
-  width: 500px;
+  width: fit-content;
   justify-self: flex-end;
   height: calc(100vh - 60px);
   background-color: aqua;
