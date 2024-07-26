@@ -81,7 +81,8 @@ const Hero = () => {
                 </div>
             </div>
             <div className="dashLinks">
-                <div className="dashLink"><p>Amount Details</p></div>
+                <div className="dashLink"><p>Dashboard</p></div>
+                <div className="dashLink"><p>Attendance</p></div>
                 <div className="dashLink">
                     <p>Pay Rolls</p>
                     <ul className="dashDropDownList">
@@ -89,9 +90,7 @@ const Hero = () => {
                         <li>Details</li>
                     </ul>
                 </div>
-                <div className="dashLink"><p>Balance</p></div>
-                <div className="dashLink"><p>Bills</p></div>
-                <div className="dashLink"><p>History</p></div>
+                <div className="dashLink"><p>Leave</p></div>
             </div>
         </div>
             <div className="payRollCards">
@@ -114,16 +113,26 @@ const Hero = () => {
                     </label>
                 </div>
                 <div>
-                    {filterPdfs().map((pdf) => (
-                    <div key={pdf.id} className="payRollCard">
-                        <p className="payRollDesp">{pdf.date}</p>
-                        <p className="payRollDesp">{pdf.title}</p>
-                        <div className="payRollBtnCont">
-                        <button className="payRollBtn" onClick={() => setSelectedPdf(pdf.url)}>View</button>
-                        <button className="payRollBtn" onClick={() => handleDownload(pdf.url)}>Download</button>
-                        </div>
-                    </div>
-                    ))}
+                    <table className='dataTable' border={'1px'}>
+                        <thead>
+                            <th>S.No.</th>
+                            <th>Title</th>
+                            <th>Date</th>
+                            <th>Action</th>
+                            <th>Action</th>
+                        </thead>
+                        <tbody>
+                            {filterPdfs().map((pdf) => (
+                                <tr>
+                                    <td>{pdf.id}</td>
+                                    <td>{pdf.title}</td>
+                                    <td>{pdf.date}</td>
+                                    <td><span onClick={() => setSelectedPdf(pdf.url)}>View</span></td>
+                                    <td><span onClick={() => handleDownload(pdf.url)}>Download</span></td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         <div className="payRollPreview">

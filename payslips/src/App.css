@@ -128,30 +128,27 @@ body {
   font-size: 16px;
   margin-left: 10px;
 }
-.payRollCard {
-  width: 300px;
-  border-radius: 20px;
-  box-shadow: 0 0 10px #bbb;
-  padding: 20px;
-  margin: 30px 0;
+.dataTable {
+  margin-top: 30px;
+  text-align: center;
+  border: solid 1px #999;
+  border-spacing: 0;
+  border-collapse: collapse;
+  border-radius: 30px;
 }
-.payRollBtnCont {
-  display: flex;
-  justify-content: flex-end;
+.dataTable thead {
+  background-color: #bbb;
 }
-.payRollBtn {
-  margin: 0 5px;
-  padding: 8px 20px;
-  border-radius: 20px;
-  border: solid 2px;
-  background-color: #4870f4;
-  color: #fff;
-  transition: background-color 0.3s;
+.dataTable th {
+  padding: 10px 20px;
+  border: solid 1px #999;
 }
-.payRollBtn:hover {
-  border: solid 2px #4870f4;
-  background-color: #fff;
-  color: #4870f4;
+.dataTable td {
+  padding: 10px;
+}
+.dataTable span:hover {
+  color: rgb(0, 140, 140);
+  text-decoration: underline;
   cursor: pointer;
 }
 .payRollPreview {
