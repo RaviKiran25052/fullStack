@@ -75,7 +75,7 @@ const Payslips = () => {
     const filteredPdfs = filterPdfs();
 
     return (
-        <>
+        <div className='paySlipCont'>
             <div className="payRollDetails">
                 <div className='dateFilter'>
                     
@@ -153,7 +153,7 @@ const Payslips = () => {
                     </div>
                 )}
             </div>
-        </>
+        </div>
     );
 }
 

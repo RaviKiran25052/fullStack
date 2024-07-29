@@ -278,7 +278,6 @@ const Uploadfile = () => {
                         </div>
                     )}
                 </div>
-                <div className="vertical-line"></div> 
                 <div className="right-panel">
                     <div className="selected-data">
                         <table>
@@ -301,7 +300,7 @@ const Uploadfile = () => {
                         </table>
                     </div>
                     <div className="generate-payroll-container">
-                        <button className="download-button" onClick={downloadAndSave}>Download & Save</button>
+                        <button className="download-button" onClick={downloadAndSave}>Save</button>
                     </div>
                     <div>  
                         <center><button className="generate-payroll-button" onClick={generatePayroll}>Generate Payroll</button></center> 
