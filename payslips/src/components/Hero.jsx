@@ -1,5 +1,6 @@
 import React from 'react';
 import Payslips from './Payslips';
+import Uploadfile from './Uploadfile';
 
 const Hero = () => {
   return (
@@ -37,7 +38,8 @@ const Hero = () => {
                 <div className="dashLink"><p>Leave</p></div>
             </div>
         </div>
-        <Payslips/>
+        {/* <Payslips/> */}
+        <Uploadfile/>
     </div>
   )
 }
