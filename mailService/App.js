@@ -1,7 +1,13 @@
 const mailer = require("nodemailer")
+const express = require("express")
+
+const app = express()
 require("dotenv").config()
 
-console.log(process.env.USER_EMAIL);
+const html = `
+<h2>Welcome</h2>
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate deserunt quaerat odio, ratione vero nesciunt enim ea eveniet nobis. Eveniet in nisi deserunt harum dolore culpa sint maxime rem architecto!</p>
+`
 
 const transporter = mailer.createTransport({
     service: "gmail",
@@ -13,14 +19,29 @@ const transporter = mailer.createTransport({
     }
 })
 
-async function main() {
+async function send(mailId) {
     const info = await transporter.sendMail({
       from: process.env.USER_EMAIL,
-      to: ["ravivarma25052@gmail.com", "sastaguvvu25@gmail.com"],
+      to: [mailId],
       subject: "test",
       html: "<b>Hello world?</b>",
     });
-    console.log("Message sent: %s", info.messageId);
+    return info.messageId;
 }
   
-main().catch(console.error);
+app.get("/", (req, res) => {
+    res.send('html')
+})
+
+app.get("/:email", async (req, res) => {
+    try {
+        const mailId = req.params
+        if (req.url === '/favicon.ico') return res.end();
+        const id = await send(mailId.email).catch(console.error);
+        res.status(200).json({message: `mail sent to ${mailId.email} with id : ${id}`})
+    } catch (error) {
+        res.status(500).json({message: error.message})
+    }
+})
+
+app.listen(process.env.PORT, () => console.log("Server Started :)"))
