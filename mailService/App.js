@@ -33,10 +33,10 @@ app.get("/", (req, res) => {
     res.send('html')
 })
 
-app.get("/:email", async (req, res) => {
+app.get("/sendmail/:email", async (req, res) => {
     try {
         const mailId = req.params
-        if (req.url === '/favicon.ico') return res.end();
+        // if (req.url === '/favicon.ico') return res.end();
         const id = await send(mailId.email).catch(console.error);
         res.status(200).json({message: `mail sent to ${mailId.email} with id : ${id}`})
     } catch (error) {

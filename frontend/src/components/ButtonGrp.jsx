@@ -8,7 +8,7 @@ const ButtonGrp = () => {
   const [isClick, setIsClick] = useState(false)
 
   function handleBar() {
-    const len = 10;
+    const len = 10; // ekkada changes chey, nee requirement base chesukoni
     const intervalTime = 1000;
     const increment = 100 / len;
 
