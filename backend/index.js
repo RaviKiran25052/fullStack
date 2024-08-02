@@ -1,81 +1,30 @@
 const express = require('express')
 const mongoose = require('mongoose')
-const Products = require('./models/product.model.js')
+const bookrouter = require("./routes/books")
+const cors = require("cors")
+require("dotenv").config()
 
-mongoose.connect("mongodb+srv://admin:OGguYe4Q36Xjfkj5@backend.exwhbsh.mongodb.net/?retryWrites=true&w=majority&appName=backend")
+
+// database connectivity
+mongoose.connect(process.env.MONGODB_URL)
 .then(() => {
     console.log('DataBase Connected..!');
 }).catch(() => {
     console.log('Connection failed..!');
 })
 
+// middleware
 const app = express()
+app.use(cors())
 app.use(express.json())
 
-app.get('/', (req, res) => {
+// routes
+app.post('/', (_, res) => {
     res.send("index page welcomes you..!")
 })
+app.use('/books', bookrouter)
 
-app.post('/api/products', async (req, res) => {
-    try {
-        const product = await Products.create(req.body)
-        res.status(200).json(product)
-    } catch (error) {
-        res.status(500).json({message: error.message})
-    }
-})
-
-app.get('/api/allproducts', async (_, res) => {
-    try {
-        const product = await Products.find();
-        res.status(200).json(product)
-    } catch (error) {
-        res.status(500).json({message: error.message})
-    }
-})
-
-app.get('/api/product/:id', async (req, res) => {
-    try {
-        const {id} = req.params;
-        const product = await Products.findById(id);
-        res.status(200).json(product)
-    } catch (error) {
-        res.status(500).json({message: error.message})
-    }
-})
-
-app.get('/api/removeProd/:id', async (req, res) => {
-    try {
-        const {id} = req.params;
-        const product = await Products.findByIdAndDelete(id, req.body);
-
-        if (!product) {
-            res.status(404).json({message: `No User with id ${id}...!`});
-        }
-
-        res.status(200).json("Prduct with ID " + product["_id"] + " delected Sucessfully..!")
-
-    } catch (error) {
-        
-    }
-})
-
-app.post('/api/updateProd/:id', async (req, res) => {
-    try {
-        const {id} = req.params;
-        const product = await Products.findByIdAndUpdate(id, req.body);
-
-        if(!product) {
-            res.status(404).json({message: "No User Found..!"})
-        }
-
-        res.status(200).json("Product with ID " + product['_id'] + " updated Successfully..!")
-
-    } catch (error) {
-        
-    }
-})
-
-app.listen(3000, () => {
+// server
+app.listen(process.env.PORT, () => {
     console.log("Server Started :)");
 })

@@ -1,10 +1,10 @@
 import './App.css';
-import ButtonGrp from './components/ButtonGrp';
+import Books from './components/Books';
 
 function App() {
   return (
     <div>
-      <ButtonGrp/>
+      <Books/>
     </div>
   );
 }

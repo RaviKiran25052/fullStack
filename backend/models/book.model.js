@@ -7,22 +7,17 @@ const schema = mongoose.Schema(
             unique: true,
             required: [true, "Please enter product name"]
         },
-        quantity: {
-            type: Number,
-            required: true,
-            default: 0
+        desp: {
+            type: String,
+            required: true
         },
         price: {
             type: Number,
-            required: true,
-            default: 0
+            required: true
         }
-    },
-    {
-        timestamps: {}
     }
 )
 
-const Product = mongoose.model("Product", schema);
+const Book = mongoose.model("Book", schema);
 
-module.exports = Product;
+module.exports = Book;
